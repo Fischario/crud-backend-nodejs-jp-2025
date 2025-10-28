@@ -32,3 +32,8 @@ src
   -- service  
      - users.js  
   index.js  
+
+
+## SQL
+- terminal:  
+> npm install sequelize mysql2
