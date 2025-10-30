@@ -1,24 +1,63 @@
-import ModelUser from '../model/users.js'
+import User from '../model/users.js'
 
 class ServiceUser {
-    FindAll() {
-        return ModelUser.FindAll()
+    async FindAll() {
+        return await User.findAll()
     }
-    FindOne(index) {
-        // Verificar se o index é menor q o .lenght da array
-        return ModelUser.FindOne(index)
+    async FindOne(id) {
+        if (!id) {
+            throw new Error('Favor informar o id')
+        }
+
+        const user = await User.findByPk(id)
+
+        if (!user) {
+            throw new Error(`Usuário ${id} não encontrado`)
+        }
+
+        return user
     }
-    Create(nome) {
-        // Verificar se o nome é válido
-        ModelUser.Create(nome)
+    async Create(nome, email, senha, ativo) {
+        if (!nome || !email || !senha) {
+            throw new Error('Favor preencher todos os campos')
+        }
+
+        await User.create({ nome, email, senha, ativo })
     }
-    Update(index, nome) {
-        // Verificar se o index é menor q o .lenght da array e se o nome é válido
-        ModelUser.Update(index, nome)
+    async Update(id, nome, email, senha, ativo) {
+        if (!id) {
+            throw new Error('Favor informar o id')
+        }
+
+        const user = await User.findByPk(id)
+
+        if (!user) {
+            throw new Error(`Usuário ${id} não encontrado`)
+        }
+
+        if (!nome || !email || !senha) {
+            throw new Error('Favor preencher todos os campos')
+        }
+
+        user.nome = nome
+        user.email = email
+        user.senha = senha
+        user.ativo = ativo
+
+        await user.save()
     }
-    Delete(index) {
-        // Verificar se o index é menor q o .lenght da array
-        ModelUser.Delete(index)
+    async Delete(id) {
+        if (!id) {
+            throw new Error('Favor informar o id')
+        }
+
+        const user = await User.findByPk(id)
+
+        if (!user) {
+            throw new Error(`Usuário ${id} não encontrado`)
+        }
+
+        await user.destroy()
     }
 }
 
