@@ -36,4 +36,10 @@ src
 
 ## SQL
 - terminal:  
-> npm install sequelize mysql2
+> npm i sequelize mysql2
+
+## JWT
+- terminal:  
+> npm i jsonwebtoken bcrypt
+
+fica entre o ENDPOINT e o CONTROLLER (no router)
