@@ -21,6 +21,9 @@ class User {
             },
             ativo: {
                 type: database.db.Sequelize.BOOLEAN
+            },
+            permissao: { // role (em inglês)
+                type: database.db.Sequelize.INTEGER // usar ENUM
             }
         })
     }

@@ -21,7 +21,7 @@ class ControllerUser {
     async Create(req, res) {
         try {
             const { nome, email, senha, ativo } = req.body
-            await ServiceUser.Create(nome, email, senha, ativo)
+            await ServiceUser.Create(nome, email, senha, ativo, 1)
             res.status(201).send()
         } catch (error) {
             res.status(500).send({ error: error.message })
@@ -37,10 +37,10 @@ class ControllerUser {
             res.status(500).send({ error: error.message })
         }
     }
-    Delete(req, res) {
+    async Delete(req, res) {
         try {
             const id = req.params.id
-            ServiceUser.Delete(id)
+            await ServiceUser.Delete(id)
             res.status(204).send()
         } catch (error) {
             res.status(500).send({ error: error.message })

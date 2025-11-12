@@ -1,7 +1,9 @@
 import User from '../model/users.js'
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 
 const JWT_SEGREDO = 'AS3nh4d0L0uvr3Er4loUvr3'
+const SALT = 12
 
 class ServiceUser {
     async FindAll() {
@@ -20,12 +22,14 @@ class ServiceUser {
 
         return user
     }
-    async Create(nome, email, senha, ativo) {
+    async Create(nome, email, senha, ativo, permissao) {
         if (!nome || !email || !senha) {
             throw new Error('Favor preencher todos os campos')
         }
 
-        await User.create({ nome, email, senha, ativo })
+        const senhaCriptografada = await bcrypt.hash(String(senha), SALT)
+
+        await User.create({ nome, email, senha: senhaCriptografada, ativo, permissao })
     }
     async Update(id, nome, email, senha, ativo) {
         if (!id) {
@@ -42,10 +46,10 @@ class ServiceUser {
             throw new Error('Favor preencher todos os campos')
         }
 
-        user.nome = nome
-        user.email = email
-        user.senha = senha
-        user.ativo = ativo
+        user.nome = nome || user.nome
+        user.email = email || user.email
+        user.senha = senha ? await bcrypt.hash(String(senha), SALT) : user.senha
+        user.ativo = ativo || user.ativo
 
         await user.save()
     }
@@ -69,11 +73,13 @@ class ServiceUser {
 
         const user = await User.findOne({ where: { email } })
 
-        if (!user || user.senha != senha) {
+        if (!user 
+            || !(await bcrypt.compare(String(senha), user.senha))
+        ) {
             throw new Error('Email ou senha inválidos')
         }
 
-        return jwt.sign({ id: user.id, nome: user.nome }, JWT_SEGREDO, { expiresIn: 60 * 60 })
+        return jwt.sign({ id: user.id, nome: user.nome, permissao: user.permissao }, JWT_SEGREDO, { expiresIn: 60 * 60 })
     }
 }
 
