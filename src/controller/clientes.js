@@ -1,10 +1,10 @@
-import ServiceUser from '../service/users.js'
+import ServiceCliente from '../service/clientes.js'
 
-class ControllerUser {
+class ControllerCliente {
     async FindAll(req, res) {
         try {
-            const nomes = await ServiceUser.FindAll()
-            res.status(200).send({ nomes })
+            const clientes = await ServiceCliente.FindAll()
+            res.status(200).send({ clientes })
         } catch (error) {
             res.status(500).send({ error: error.message })
         }
@@ -12,16 +12,16 @@ class ControllerUser {
     async FindOne(req, res) {
         try {
             const id = req.params.id
-            const user = await ServiceUser.FindOne(id)
-            res.status(200).send({ user })
+            const cliente = await ServiceCliente.FindOne(id)
+            res.status(200).send({ cliente })
         } catch (error) {
             res.status(500).send({ error: error.message })
         }
     }
     async Create(req, res) {
         try {
-            const { nome, email, senha, ativo } = req.body
-            await ServiceUser.Create(nome, email, senha, ativo, 1)
+            const { nome, email, senha } = req.body
+            await ServiceCliente.Create(nome, email, senha)
             res.status(201).send()
         } catch (error) {
             res.status(500).send({ error: error.message })
@@ -30,8 +30,8 @@ class ControllerUser {
     async Update(req, res) {
         try {
             const id = req.params.id
-            const { nome, email, senha, ativo } = req.body
-            await ServiceUser.Update(id, nome, email, senha, ativo)
+            const { nome, email, senha } = req.body
+            await ServiceCliente.Update(id, nome, email, senha)
             res.status(200).send()
         } catch (error) {
             res.status(500).send({ error: error.message })
@@ -40,7 +40,7 @@ class ControllerUser {
     async Delete(req, res) {
         try {
             const id = req.params.id
-            await ServiceUser.Delete(id)
+            await ServiceCliente.Delete(id)
             res.status(204).send()
         } catch (error) {
             res.status(500).send({ error: error.message })
@@ -50,7 +50,7 @@ class ControllerUser {
         try {
             const { email, senha } = req.body
             
-            const token = await ServiceUser.Login(email, senha)
+            const token = await ServiceCliente.Login(email, senha)
 
             res.status(200).send({ token })
         } catch (error) {
@@ -59,4 +59,4 @@ class ControllerUser {
     }
 }
 
-export default new ControllerUser()
+export default new ControllerCliente()

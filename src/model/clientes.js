@@ -1,10 +1,8 @@
 import database from "../config/database.js"
 
-// const nomes = new Array('Erick', 'Guilherme', 'Augusto') // const nomes = [] // Mesma coisa, só que mais bonito
-
-class User {
+class Cliente {
     constructor() {
-        this.model = database.db.define('users', {
+        this.model = database.db.define('clientes', {
             id: {
                 type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
@@ -18,15 +16,9 @@ class User {
             },
             senha: {
                 type: database.db.Sequelize.STRING
-            },
-            ativo: {
-                type: database.db.Sequelize.BOOLEAN
-            },
-            permissao: { // role (em inglês)
-                type: database.db.Sequelize.INTEGER // usar ENUM
             }
         })
     }
 }
 
-export default new User().model
+export default new Cliente().model

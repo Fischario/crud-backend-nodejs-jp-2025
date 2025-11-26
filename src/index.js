@@ -1,12 +1,14 @@
 import express from 'express'
-import router from './router/users.js';
+import routerClientes from './router/clientes.js';
+import routerAtendimentos from './router/atendimentos.js'
 import database from './config/database.js';
 
 const app = express();
 
 app.use(express.json())
 
-app.use('/api/v1', router)
+app.use('/api/v1', routerClientes)
+app.use('/api/v1', routerAtendimentos)
 
 const porta = 9999
 
@@ -14,7 +16,7 @@ database.db
     .sync({ force: false })
     .then((_) => {
         app.listen(porta, () => {
-            console.info(`servidor roubando na porta ${porta}`)
+            console.info(`servidor se infiltrando na máfia dos ratos na porta ${porta}`)
         })
     })
     .catch((e) => {
